@@ -1,4 +1,5 @@
 const express = require('express')
+const Logger = require('./Logger/Logger')
 
 const app = express();
 
@@ -10,5 +11,5 @@ app.get("/", (req, res)=>{
 })
 
 app.listen(3000,()=>{
-    console.log("Server Started At Port 3000");
+    Logger.log("Server Started at http://localhost:3000")
 })
