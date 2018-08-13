@@ -1,0 +1,28 @@
+{
+  "name": "node-shopwebsite",
+  "version": "1.0.0",
+  "description": "A Simple Shopping Website in NodeJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sid-Heart/Node-ShopWebsite.git"
+  },
+  "author": "Sid-Heart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sid-Heart/Node-ShopWebsite/issues"
+  },
+  "homepage": "https://github.com/Sid-Heart/Node-ShopWebsite#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.0",
+    "pug": "^2.0.3"
+  }
+}

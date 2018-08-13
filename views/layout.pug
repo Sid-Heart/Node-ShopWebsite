@@ -1,0 +1,47 @@
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', integrity='sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', crossorigin='anonymous')
+    body
+        //Navigation bar
+        nav.navbar.navbar-expand-md.navbar-dark.bg-dark.mb-4
+            a.navbar-brand(href='#') RandomShop
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarCollapse', aria-controls='navbarCollapse', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarCollapse.collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
+                    li.nav-item.active
+                        a.nav-link(href='#')
+                            | Home 
+                            span.sr-only (current)
+                    li.nav-item
+                        a.nav-link(href='#') Products
+                    li.nav-item.dropdown#dropdown
+                        a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                            | Account
+                        .dropdown-menu#dropdown(aria-labelledby='navbarDropdown')
+                            a.dropdown-item(href='#') My Profile
+                            a.dropdown-item(href='#') My Account
+                            .dropdown-divider
+                            a.dropdown-item(href='#') Logout
+
+                form.form-inline.mt-2.mt-md-0
+                    input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search')
+                    button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+        hr
+        //Main Content
+        .container-fluid
+            block content
+        //BootStrap Script
+        script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49', crossorigin='anonymous')
+        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+        // Footer
+        hr
+        footer.bg-dark(style="margin:auto,background-color")
+            div(style="padding:0.5cm 0.5cm 0.5cm 0.5cm")
+                p(style="text-align:center;color:white") Copyright &copy; Sid Inc. 2015 - 2020.
+                p(style="text-align:center;color:white")
+                    a(href='#' style="text-align:center") Back to top
+
