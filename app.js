@@ -4,11 +4,11 @@ const bodyParser = require("body-parser")
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
-const mongodb = require('mongodb').MongoClient
+const dbHandler = require('./DBHandler/DBHandler')
 const app = express()
 const { check, validationResult } = require('express-validator/check');
 
-//Setup For PUG
+//Setup For PUG Template Engine
 app.set('views', './views')
 app.set('view engine', 'pug')
 
@@ -54,24 +54,15 @@ app.use("/product", require("./Routes/Product"))
 app.use("/user", require("./Routes/User"))
 app.use("/order", require("./Routes/Order"))
 
-//Home Page
-app.get("/", (req, res) => {
-  Logger.log("GET: /")
-  res.render("index")
-})
+dbHandler.startServer();
 
 //Start Server
 app.listen(3000, () => {
   Logger.log("Server Started at http://localhost:3000")
 })
 
-mongodb.connect('mongodb://localhost:27017',{ useNewUrlParser: true }, (err, client) => {
-  if (err) throw err
-  const db = client.db("shopDB");
-  const collection = db.collection('Users');
-  // Find some documents
-  collection.find({}).toArray((err, docs) => {
-    //jkasdfhida
-  });
-  Logger.log("Connected To Database mongodb://localhost:27017")
+//Home Page
+app.get("/", (req, res) => {
+  Logger.log("GET: /")
+  res.render("index")
 })

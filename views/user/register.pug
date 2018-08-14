@@ -8,9 +8,10 @@ block content
       .form-group
         label(for='name') Name*:
         input#name.form-control(name='name')
-      .form-group
-        label(for='username') UserName*:
-        input#username.form-control(name='username')
+      .form-group#uname
+        label#usernameLabel(for='username') UserName*:
+        input#username.form-control(name='username' onkeyup="checkAvail(this.value)")
+        small.help-block#helpBlock
       .form-group
         label(for='email') Email address*:
         input#email.form-control(type='email' name='email')
@@ -38,3 +39,37 @@ block content
       .form-group
           input.btn.btn-default(type='submit' value="Register")
   pre * Required
+  script.
+    function checkAvail(val){
+    if(val.length<=5){
+    document.getElementById("username").classList.remove("is-valid")
+    document.getElementById("usernameLabel").classList.remove("text-success")
+    document.getElementById("helpBlock").classList.remove("text-success")
+    document.getElementById("username").classList.add("is-invalid")
+    document.getElementById("usernameLabel").classList.add("text-danger")
+    document.getElementById("helpBlock").classList.add("text-danger")
+    document.getElementById("helpBlock").innerText="Must Be Minimum 5"
+    return
+    }
+    $.ajax( "/user/username?q="+val )
+    .done(function(data) {
+    if(data.exists){
+    document.getElementById("username").classList.remove("is-valid")
+    document.getElementById("usernameLabel").classList.remove("text-success")
+    document.getElementById("helpBlock").classList.remove("text-success")
+    document.getElementById("username").classList.add("is-invalid")
+    document.getElementById("usernameLabel").classList.add("text-danger")
+    document.getElementById("helpBlock").classList.add("text-danger")
+    document.getElementById("helpBlock").innerText="Username Already Taken"
+    }
+    else{
+    document.getElementById("username").classList.remove("is-invalid")
+    document.getElementById("usernameLabel").classList.remove("text-danger")
+    document.getElementById("helpBlock").classList.remove("text-danger")
+    document.getElementById("username").classList.add("is-valid")
+    document.getElementById("usernameLabel").classList.add("text-success")
+    document.getElementById("helpBlock").classList.add("text-success")
+    document.getElementById("helpBlock").innerText="Username Availaible"
+    }
+    })
+    }

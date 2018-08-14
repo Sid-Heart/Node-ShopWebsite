@@ -1,5 +1,6 @@
 module.exports = {
-    log : (msz)=>{
-        console.log(new Date()+" - "+msz);
-    }
+  log: (msz,obj) => {
+    console.log(new Date() + " - " + msz)
+    if (obj) console.log(obj)
+  }
 }
