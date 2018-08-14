@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  h1 Register
+  hr
+  .container
+    form(action='/user/register' method="POST")
+      .form-group
+        label(for='name') Name*:
+        input#name.form-control(name='name')
+      .form-group
+        label(for='username') UserName*:
+        input#username.form-control(name='username')
+      .form-group
+        label(for='email') Email address*:
+        input#email.form-control(type='email' name='email')
+      .form-group
+        label(for='pwd') Password*:
+        input#pwd.form-control(type='password' name='password')
+      .form-group
+        label(for='pwd2') Confirm Password*:
+        input#pwd2.form-control(type='password' name='password2')
+      .form-group  
+        label(for='role') Role*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        br
+        .form-check.form-check-inline
+          label.radio-inline
+            input(type='radio' name="role" value="seller")
+            | &nbsp;Seller
+        .form-check.form-check-inline
+          label.radio-inline
+            input(type='radio' name="role" value="courier")
+            | &nbsp;Courier
+        .form-check.form-check-inline
+          label.radio-inline
+            input(type='radio' name="role" value="buyer")
+            | &nbsp;Buyer
+      .form-group
+          input.btn.btn-default(type='submit' value="Register")
+  pre * Required

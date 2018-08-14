@@ -12,7 +12,7 @@ html
             #navbarCollapse.collapse.navbar-collapse
                 ul.navbar-nav.mr-auto
                     li.nav-item.active
-                        a.nav-link(href='#')
+                        a.nav-link(href='/')
                             | Home 
                             span.sr-only (current)
                     li.nav-item
@@ -21,17 +21,34 @@ html
                         a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
                             | Account
                         .dropdown-menu#dropdown(aria-labelledby='navbarDropdown')
-                            a.dropdown-item(href='#') My Profile
-                            a.dropdown-item(href='#') My Account
+                            a.dropdown-item(href='/user/register') Register
                             .dropdown-divider
-                            a.dropdown-item(href='#') Logout
+                            a.dropdown-item(href='/user/login') Login
 
                 form.form-inline.mt-2.mt-md-0
                     input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search')
                     button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
         hr
+        //Error Handler
+        if errors.length > 0
+            .alert.alert-danger
+                ul
+                    each error in errors
+                        li= error.msg
+        if success.length > 0
+            .alert.alert-success
+                ul
+                    each msz in success
+                        li= msz
+        if warnings.length > 0
+            .alert.alert-warning
+                ul
+                    each msz in warnings
+                        li= msz
+
         //Main Content
-        .container-fluid
+        .container  
+          .jumbotron
             block content
         //BootStrap Script
         script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
