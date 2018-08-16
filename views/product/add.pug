@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h1 Add Product
+  hr
+  .container
+    form(action='/product/add' method="POST")
+      .form-group
+        label(for='name') Name*:
+        input#name.form-control(name='name' required)
+      .form-group
+        label(for='price') Price*:
+        input#price.form-control(type='number' name='price' step="0.01" required)
+      .form-group
+        label#description(for='description') Product Description*:
+        input.form-control(name='description' required)
+      .form-group
+        label(for='stock') Stock*:
+        input#stock.form-control(type='number' name='stock' required)
+      .form-group
+        label(for='expiry') Expiry*:
+        input#expiry.form-control(type='date' name='expiry' required)
+      .form-group
+        label(for='category') Category*:
+        input#category.form-control(type='text' name='category' required)
+      .form-group
+          input.btn.btn-default(type='submit' value="Add Product")
+  pre * Required

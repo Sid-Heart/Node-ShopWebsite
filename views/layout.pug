@@ -6,27 +6,38 @@ html
     body
         //Navigation bar
         nav.navbar.navbar-expand-md.navbar-dark.bg-dark.mb-4
-            a.navbar-brand(href='#') RandomShop
+            a.navbar-brand(href='/') RandomShop
             button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarCollapse', aria-controls='navbarCollapse', aria-expanded='false', aria-label='Toggle navigation')
                 span.navbar-toggler-icon
             #navbarCollapse.collapse.navbar-collapse
                 ul.navbar-nav.mr-auto
-                    li.nav-item.active
+                    li.nav-item
                         a.nav-link(href='/')
                             | Home 
                             span.sr-only (current)
                     li.nav-item
-                        a.nav-link(href='#') Products
+                        a.nav-link(href='/product/view') Products
                     li.nav-item.dropdown#dropdown
                         a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
                             | Account
-                        .dropdown-menu#dropdown(aria-labelledby='navbarDropdown')
-                            a.dropdown-item(href='/user/register') Register
-                            .dropdown-divider
-                            a.dropdown-item(href='/user/login') Login
-
-                form.form-inline.mt-2.mt-md-0
-                    input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search')
+                        if typeof user === 'undefined'
+                            .dropdown-menu#dropdown(aria-labelledby='navbarDropdown')
+                                a.dropdown-item(href='/user/register') Register
+                                .dropdown-divider
+                                a.dropdown-item(href='/user/login') Login
+                        else
+                            .dropdown-menu#dropdown(aria-labelledby='navbarDropdown')
+                                if user.role === 'seller'
+                                    a.dropdown-item(href='/product/add') Add Product
+                                    a.dropdown-item(href='/product/mine') My Product
+                                else if user.role === 'buyer'
+                                    a.dropdown-item(href='/order/mine') My Orders
+                                else if user.role === 'courier'
+                                    a.dropdown-item(href='/order/view') View All Orders
+                                .dropdown-divider
+                                a.dropdown-item(href='/user/logout') Logout
+                form.form-inline.mt-2.mt-md-0(action="/product/view")
+                    input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search', name='q')
                     button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
         hr
         //Error Handler
@@ -34,7 +45,10 @@ html
             .alert.alert-danger
                 ul
                     each error in errors
-                        li= error.msg
+                        if typeof error === 'string'
+                            li= error
+                        else
+                            li= error.msg
         if success.length > 0
             .alert.alert-success
                 ul
@@ -61,4 +75,5 @@ html
                 p(style="text-align:center;color:white") Copyright &copy; Sid Inc. 2015 - 2020.
                 p(style="text-align:center;color:white")
                     a(href='#' style="text-align:center") Back to top
+        script.
 

@@ -6,7 +6,12 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const dbHandler = require('./DBHandler/DBHandler')
 const app = express()
-const { check, validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
+const authSetup = require("./Authentication/Auth")
+const passport = require('passport')
+
+// Setup Auth and Serializer
+authSetup();
 
 //Setup For PUG Template Engine
 app.set('views', './views')
@@ -19,8 +24,8 @@ app.use(bodyParser.json())
 // Passing Logger Middleware
 app.use("*", (req, res, next) => {
   req.log = Logger.log
-  req.check = check;
   req.validationResult = validationResult;
+  req.log("Attached Logging Middleware")
   next()
 })
 
@@ -34,18 +39,24 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    cookie: {maxAge: 60000}
+    cookie: { maxAge: 60000 }
   }
 }))
+
+//Passport Middleware
+app.use(express.static('public'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Messages Middleware
 app.use(flash());
 
 // Middleware To Flash Messages
 app.use((req, res, next) => {
-  res.locals.errors = req.flash("errors")
+  res.locals.errors = req.flash("error")
   res.locals.success = req.flash("success")
   res.locals.warnings = req.flash("warnings")
+  if (req.user !== undefined) res.locals.user = {role:req.user.role}
   next();
 });
 

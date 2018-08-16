@@ -3,13 +3,13 @@ extends ../layout
 block content
   h1 Login
   hr
-  form(action='/user/login')
+  form(action='/user/login' method='POST')
     .form-group
-      label(for='email') Email:
-      input#email.form-control(type='email', placeholder='Enter email', name='email')
+      label(for='email') Username:
+      input#username.form-control(type='text', placeholder='Enter username', name='username')
     .form-group
       label(for='pwd') Password:
-      input#pwd.form-control(type='password', placeholder='Enter password', name='pwd')
+      input#pwd.form-control(type='password', placeholder='Enter password', name='password')
     .checkbox
       label
         input(type='checkbox', name='remember')

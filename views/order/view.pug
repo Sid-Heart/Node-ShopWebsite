@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h1 Orders
+  hr
+  for order in results
+    form(method='POST' action='/order/deliver/'+order._id)
+      a.list-group-item.list-group-item-action.flex-column.align-items-start(href="/product/view/"+order.id)
+        .d-flex.w-100.justify-content-between
+          h5.mb-1= order.product
+          small= order.user
+        p.mb-1= order.status+" At "+order.description
+        if order.status!=='Delivered'
+          if typeof user !== 'undefined'
+            if user.role === 'courier'
+              .form-group
+                  input.btn.btn-default(type='submit' value="Delivered Order")

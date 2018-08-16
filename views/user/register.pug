@@ -7,34 +7,34 @@ block content
     form(action='/user/register' method="POST")
       .form-group
         label(for='name') Name*:
-        input#name.form-control(name='name')
+        input#name.form-control(name='name' required)
       .form-group#uname
         label#usernameLabel(for='username') UserName*:
-        input#username.form-control(name='username' onkeyup="checkAvail(this.value)")
+        input#username.form-control(name='username' onkeyup="checkAvail(this.value)" required)
         small.help-block#helpBlock
       .form-group
         label(for='email') Email address*:
-        input#email.form-control(type='email' name='email')
+        input#email.form-control(type='email' name='email' required)
       .form-group
         label(for='pwd') Password*:
-        input#pwd.form-control(type='password' name='password')
+        input#pwd.form-control(type='password' name='password' required)
       .form-group
         label(for='pwd2') Confirm Password*:
-        input#pwd2.form-control(type='password' name='password2')
+        input#pwd2.form-control(type='password' name='password2' required)
       .form-group  
         label(for='role') Role*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         br
         .form-check.form-check-inline
           label.radio-inline
-            input(type='radio' name="role" value="seller")
+            input(type='radio' name="role" value="seller" required)
             | &nbsp;Seller
         .form-check.form-check-inline
           label.radio-inline
-            input(type='radio' name="role" value="courier")
+            input(type='radio' name="role" value="courier" required)
             | &nbsp;Courier
         .form-check.form-check-inline
           label.radio-inline
-            input(type='radio' name="role" value="buyer")
+            input(type='radio' name="role" value="buyer" required)
             | &nbsp;Buyer
       .form-group
           input.btn.btn-default(type='submit' value="Register")

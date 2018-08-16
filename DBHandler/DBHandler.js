@@ -7,7 +7,7 @@ const exportObj = {
       const database = client.db("shopDB");
       const tempdb = {
         Users: database.collection("Users"),
-        Product: database.collection("Product"),
+        Products: database.collection("Products"),
         Orders: database.collection("Orders")
       }
       Logger.log("Connected To DB mongodb://localhost:27017")

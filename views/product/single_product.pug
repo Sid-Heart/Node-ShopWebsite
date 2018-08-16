@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  h1 Product Description
+  hr
+  each product in result
+    each value, params in product
+      if params !== '_id'
+        p
+          b= params.charAt(0).toUpperCase()+params.slice(1)+' : '
+          i= value
+    form(method='POST' action='/order/create/'+product._id)
+      if typeof user !== 'undefined'
+        if user.role === 'buyer'
+          .form-group
+            if product.stock===0
+              input.btn.btn-error(type='submit' value="Out Of Stock")
+            else
+              input.btn.btn-default(type='submit' value="Create Order")
