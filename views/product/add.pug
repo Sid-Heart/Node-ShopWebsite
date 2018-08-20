@@ -4,10 +4,13 @@ block content
   h1 Add Product
   hr
   .container
-    form(action='/product/add' method="POST")
+    form(action='/product/add' method="POST" enctype="multipart/form-data")
       .form-group
         label(for='name') Name*:
         input#name.form-control(name='name' required)
+      .form-group
+        label(for='price') Display Image*:
+        input#price.form-control(type='file' name='productImage' required)
       .form-group
         label(for='price') Price*:
         input#price.form-control(type='number' name='price' step="0.01" required)

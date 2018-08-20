@@ -3,9 +3,13 @@ extends ../layout
 block content
   h1 Products
   hr
-  for product in result
-    a.list-group-item.list-group-item-action.flex-column.align-items-start(href="/product/view/"+product._id)
-      .d-flex.w-100.justify-content-between
-        h5.mb-1= product.name
-        small= '₹'+product.price
-      p.mb-1= product.description
+  if result.length == 0
+    h4 No Product Found
+  else
+    for product in result
+      a.list-group-item.list-group-item-action.flex-column.align-items-start(href="/product/view/"+product._id)
+        .d-flex.w-100.justify-content-between
+          img(src='/'+product._id+"/image.jpg" height='64' border='1')
+          h5.mb-1= product.name
+          small= '₹'+product.price
+        p.mb-1= product.description

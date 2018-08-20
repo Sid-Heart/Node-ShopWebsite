@@ -115,7 +115,6 @@ route.post("/create/:id", (req, res) => {
   try {
     dbHandler.db.Products.find({ _id: new mongodb.ObjectId(req.params.id) }).toArray((error1, result1) => {
       if (error1 || result1.length !== 1) {
-        console.log("===================")
         req.log('POST /order/create' + req.params.id + " Not Found ",error1)
         req.flash("error", "Product Not Found")
         return res.redirect('/')

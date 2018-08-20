@@ -61,3 +61,6 @@ typings/
 .next
 .eslintrc.json
 .vscode
+
+# Public Files
+Public/

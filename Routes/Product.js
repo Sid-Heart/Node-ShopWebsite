@@ -2,6 +2,8 @@ const express = require('express')
 const mongodb = require('mongodb')
 const { check } = require('express-validator/check');
 const dbHandler = require('../DBHandler/DBHandler')
+const multer = require('multer')
+const fs = require('fs')
 const route = express.Router()
 
 route.get("/", (req, res) => {
@@ -25,7 +27,8 @@ route.get("/add", (req, res) => {
   return res.render("product/add")
 })
 
-route.post("/add", [
+const upload = multer({ storage: multer.memoryStorage() })
+route.post("/add",upload.single('productImage'),[
   check('name').not().isEmpty().withMessage("Name Should Not Be Null"),
   check('description').not().isEmpty().withMessage("Description Should Not Be Null"),
   check('stock').not().isEmpty().withMessage("Stock Should Not Be Null").isNumeric().withMessage("Stock Should Be Numeric"),
@@ -39,20 +42,30 @@ route.post("/add", [
     req.flash("error", [{ msg: "Not Authorized To Add Product" }])
     return res.redirect("/")
   }
-  const errors = req.validationResult(req);
-  if (!errors.isEmpty()) {
-    req.log('Product Add Failed With Error', errors.array())
-    return res.render("product/add", { error: errors.array() })
+  let errors = req.validationResult(req);
+  if (req.file.mimetype !== 'image/jpeg'||req.file.originalname.match(/.jpg$/u)) {
+    errors = errors.array()
+    errors.push({msg:"Image Format Should Be JPG"})
+  }
+  if (errors.length!==0) {
+    req.log('Product Add Failed With Error', errors)
+    return res.render("product/add", { errors })
   }
   req.body.seller = req.user._id
-  req.body.stock = parseInt(req.body.stock,10)
-  req.body.price = parseInt(req.body.price,10)
+  req.body.stock = parseInt(req.body.stock, 10)
+  req.body.price = parseInt(req.body.price, 10)
   dbHandler.db.Products.insertOne(req.body, (error, result) => {
     if (error) {
       req.log("DB Error While Adding Product with Error", error)
       req.flash("error", "DB Error, Unable To Add Product")
       return res.redirect("/")
     }
+    fs.mkdir("public/"+result.ops[0]._id,(err1) => {
+      if (err1) throw err1
+      fs.writeFile("public/"+result.ops[0]._id+"/image.jpg",req.file.buffer,{flag:'wx'},(err) => {
+        if (err) throw err;
+      })
+    })
     req.log("Product Added To Database with result", result)
     req.flash("success", "Product Added Successfully!")
     return res.redirect("/product/view")
@@ -66,13 +79,13 @@ route.get("/view/:id", (req, res) => {
     dbHandler.db.Products.find({ "_id": new mongodb.ObjectId(req.params.id) }).toArray((error, result) => {
       if (error || result.length !== 1) {
         req.log("Failed To View Product With Error", error)
-        req.flash("error","Product Not Found")
+        req.flash("error", "Product Not Found")
         return res.redirect("/")
       }
       dbHandler.db.Users.find({ "_id": new mongodb.ObjectId(result[0].seller) }).toArray((reeor1, result1) => {
         if (error) {
           req.log("Failed To View Product Seller With Error", error)
-          req.flash("error","Product Not Found")
+          req.flash("error", "Product Not Found")
           return res.redirect("/")
         }
         if (result1.length === 1) result[0].seller = result1[0].name
@@ -82,7 +95,7 @@ route.get("/view/:id", (req, res) => {
       return null
     })
   } catch (err) {
-    req.flash("error","Product Not Found")
+    req.flash("error", "Product Not Found")
     return res.redirect("/")
   }
   return null

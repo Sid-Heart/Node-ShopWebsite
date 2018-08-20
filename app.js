@@ -5,10 +5,10 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const dbHandler = require('./DBHandler/DBHandler')
-const app = express()
 const { validationResult } = require('express-validator/check');
 const authSetup = require("./Authentication/Auth")
 const passport = require('passport')
+const app = express()
 
 // Setup Auth and Serializer
 authSetup();

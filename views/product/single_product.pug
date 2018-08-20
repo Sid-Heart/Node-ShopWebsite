@@ -4,6 +4,7 @@ block content
   h1 Product Description
   hr
   each product in result
+    img(src='/'+product._id+"/image.jpg" height='256' border='1')
     each value, params in product
       if params !== '_id'
         p
@@ -14,6 +15,6 @@ block content
         if user.role === 'buyer'
           .form-group
             if product.stock===0
-              input.btn.btn-error(type='submit' value="Out Of Stock")
+              input.btn.btn-danger(type='submit' value="Out Of Stock")
             else
-              input.btn.btn-default(type='submit' value="Create Order")
+              input.btn.btn-primary(type='submit' value="Create Order")
