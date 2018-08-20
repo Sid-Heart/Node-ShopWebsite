@@ -2,6 +2,7 @@ const passport = require('passport')
 const localStrategy = require('passport-local').Strategy;
 const mongodb = require('mongodb')
 const dbHandler = require('../DBHandler/DBHandler')
+const bcrypt = require("bcrypt")
 
 const setup = () => {
   //Passport Authentication Verification
@@ -12,12 +13,13 @@ const setup = () => {
     dbHandler.db.Users.find({ username }).toArray((err, user) => {
       if (err) return done(err)
       if (user.length !== 1) {
-        return done(null, false, [{msg: 'Incorrect username.'}]);
+        return done(null, false, [{ msg: 'Incorrect username.' }]);
       }
-      if (user[0].password !== password) {
+      bcrypt.compare(password, user[0].password, (error, res) => {
+        if (error) return done(null, false, { msg: 'Incorrect password.' });
+        if (res) return done(null, user[0]);
         return done(null, false, { msg: 'Incorrect password.' });
-      }
-      return done(null, user[0]);
+      })
     });
   }));
   // Passport Serialize User

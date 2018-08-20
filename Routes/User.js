@@ -2,6 +2,7 @@ const express = require('express')
 const { check } = require('express-validator/check');
 const dbHandler = require('../DBHandler/DBHandler')
 const passport = require('passport')
+const bcrypt = require('bcrypt')
 const route = express.Router()
 
 route.get("/", (req) => {
@@ -30,26 +31,34 @@ route.post("/register", [
       req.log("Register Failed For" + JSON.stringify(errors))
       return res.render("user/register", { errors });
     }
-    dbHandler.db.Users.insert({
-      name: req.body.name,
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      role: req.body.role
-    }, (errorInsert, insertResult) => {
-      if (errorInsert) {
-        req.log("DB Error While Inserting To Users")
-        req.flash("error","DB Error, Unable To Register")
-        return res.redirect("/")
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      if (err) {
+        req.log("Register Failed For" + JSON.stringify(errors))
+        req.flash("Something Went Wrong")
+        return res.render("/");
       }
-      req.log("DB Inserting To Users Success With Response ", insertResult)
-      req.log("Register Successful Redirecting To Login Page")
-      req.flash("success", "Registration Successful")
-      return res.redirect("/user/login")
+      dbHandler.db.Users.insert({
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username,
+        password: hash,
+        role: req.body.role
+      }, (errorInsert, insertResult) => {
+        if (errorInsert) {
+          req.log("DB Error While Inserting To Users")
+          req.flash("error", "DB Error, Unable To Register")
+          return res.redirect("/")
+        }
+        req.log("DB Inserting To Users Success With Response ", insertResult)
+        req.log("Register Successful Redirecting To Login Page")
+        req.flash("success", "Registration Successful")
+        return res.redirect("/user/login")
+      })
+      return null
     })
-    return null;
+    return null
   })
-  return null;
+  return null
 })
 
 route.get("/username", [check('q').isLength({ min: 5 }).withMessage("Username Invalid")], (req, res) => {
@@ -96,10 +105,9 @@ route.post('/login', passport.authenticate('local', {
   res.redirect("/")
 })
 
-route.get('/logout',(req,res) => {
+route.get('/logout', (req, res) => {
   req.logout();
-  req.flash("success","Logout Successful")
+  req.flash("success", "Logout Successful")
   res.redirect("/")
 })
-
 module.exports = route;

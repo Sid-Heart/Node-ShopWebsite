@@ -37,14 +37,15 @@ route.post("/add",upload.single('productImage'),[
   check('price').not().isEmpty().withMessage("Price Should Not Be Null").isFloat().withMessage("Price is not Float")
 ], (req, res) => {
   req.log("POST /product/add ", req.body)
+  req.log("POST /product/add ", req.file)
   if (req.user === undefined) {
     req.log("Not Authorized ", req.user)
     req.flash("error", [{ msg: "Not Authorized To Add Product" }])
     return res.redirect("/")
   }
   let errors = req.validationResult(req);
-  if (req.file.mimetype !== 'image/jpeg'||req.file.originalname.match(/.jpg$/u)) {
-    errors = errors.array()
+  errors = errors.array()
+  if (req.file.mimetype !== 'image/jpeg'||!req.file.originalname.match(/.jpg$/u)) {
     errors.push({msg:"Image Format Should Be JPG"})
   }
   if (errors.length!==0) {
